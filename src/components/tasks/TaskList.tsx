@@ -1,18 +1,25 @@
 import  {useState} from 'react';
-import { Button, ListGroup, Badge } from 'react-bootstrap';
+import { Button, ListGroup } from 'react-bootstrap';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 import { useTasks } from '../../hooks/useTasks';
+import type { Tasks } from '../../types/TaskTypes';
 
 
-const TaskList: React.FC = () => {
+interface TaskFormProps {
+  task: Tasks | null;
+  onSubmit: (task: Tasks) => void;
+  onCancel: () => void;
+}
+
+const TaskList: React.FC<TaskFormProps> = () => {
 
 
   const [showForm, setShowForm] = useState(false);
-  const [editingTask, setEditingTask] = useState(null);
+  const [editingTask, setEditingTask] = useState<Tasks | null>(null);
   const { tasks, addTask, editTask, removeTask, completeTask } = useTasks();
 
-  const handleSubmit = (task: any) => {
+  const handleSubmit = (task: Tasks) => {
     if ('id' in task) {
       console.log('Editing task:', task);
       editTask(task.id, task);
@@ -37,7 +44,7 @@ const TaskList: React.FC = () => {
 
       {showForm || editingTask ? (
         <TaskForm 
-          task={editingTask}
+          task={editingTask ?? undefined}
           onSubmit={handleSubmit}
           onCancel={() => {
             setShowForm(false);

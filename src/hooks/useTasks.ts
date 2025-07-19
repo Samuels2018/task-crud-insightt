@@ -1,4 +1,6 @@
-import {useState, useEffect, useCallback, use} from 'react';
+import {useState, useEffect, useCallback} from 'react';
+//import taskService from '../services/taskService';
+import * as taskService from '../services/mockTasks';
 
 export const useTasks = () => {
   // const { token } = useAuth();
@@ -9,9 +11,11 @@ export const useTasks = () => {
   const CargarTasks = useCallback(async () => {
     //if (!token) return;
 
+    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+
     setLoading(true);
     try {
-      const data =  //= await fetchTasks(token);
+      const data = await taskService.getTasks(token);
       setTasks(data);
 
     }catch (error) {
@@ -30,8 +34,10 @@ export const useTasks = () => {
   const addTask = async (task: any) => {
     // if (!token) return;
 
+    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+
     try {
-      const newTask = //await createTask(task, token);
+      const newTask = await taskService.createTask(task, token);
       setTasks((prevTasks) => [...prevTasks, newTask]);
     
     } catch (error) {
@@ -42,9 +48,11 @@ export const useTasks = () => {
 
   const editTask = async (id: string, updatedTask: any) => {
     // if (!token) return;
-    
+
+    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+
     try {
-      const updateTask = // await updateTask(id, updatedTask, token);
+      const updateTask = await taskService.updateTask(id, updatedTask, token);
       setTasks((prevTasks) =>
         prevTasks.map((task) => (task.id === id ? updateTask : task))
       );
@@ -59,8 +67,10 @@ export const useTasks = () => {
   const removeTask = async (id: string) => {
     // if (!token) return;
 
+    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+
     try {
-      // await deleteTask(id, token);
+      await taskService.deleteTask(id, token);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
 
     } catch (error) {
@@ -72,8 +82,10 @@ export const useTasks = () => {
   const completeTask = async (id: string) => {
     // if (!token) return;
 
+    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+
     try {
-      const markTask = // await markTaskComplete(id, token);
+      const markTask = await taskService.markTaskComplete(id, token);
       setTasks((prevTasks) => prevTasks.map((task) => task.id === id ? markTask: task));
 
     } catch (error) {

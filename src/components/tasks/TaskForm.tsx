@@ -1,16 +1,17 @@
 import {useState} from 'react';
 import { Form, Button, Stack, Card } from 'react-bootstrap';
+import type { Tasks } from '../../types/TaskTypes';
 
 
 interface TaskFormProps {
-  task?: any,
-  onSubmit: (task: any) => void,
+  task?: Tasks,
+  onSubmit: (task: Tasks) => void,
   onCancel: () => void
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({task, onSubmit, onCancel}) => {
-  const [title, setTitle] = useState(task.title || '');
-  const [description, setDescription] = useState(task.description || '');
+  const [title, setTitle] = useState(task?.title || '');
+  const [description, setDescription] = useState(task?.description || '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ const TaskForm: React.FC<TaskFormProps> = ({task, onSubmit, onCancel}) => {
       onSubmit({ ...task, title, description });
     
     }else {
-      onSubmit({ title, description, status: 'pending' });
+      onSubmit({ title, description, completed: 2, dueDate: '' });
     }
   }
 

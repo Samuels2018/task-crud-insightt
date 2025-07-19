@@ -1,10 +1,11 @@
 import {useState} from 'react';
 import { ListGroupItem, Button, Badge } from 'react-bootstrap';
+import type { Tasks } from '../../types/TaskTypes';
 
 
 interface TaskItemProps {
-  task: any,
-  onEdit: (task: any) => void,
+  task: Tasks,
+  onEdit: (task: Tasks) => void,
   onDelete: (taskId: string) => void,
   onComplete: (taskId: string) => void
 }
@@ -15,7 +16,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, onEdit, onDelete, onComplete }
       <div>
         <h5 className="mb-1 d-flex align-items-center">
           {task.title}
-          {task.status === 'completed' && (
+          {task.completed === 1 && (
             <Badge bg="success" className="ms-2">Completada</Badge>
           )}
         </h5>
@@ -23,7 +24,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, onEdit, onDelete, onComplete }
       </div>
       
       <div>
-        {task.status !== 'completed' && (
+        {task.completed !== 1 && (
           <>
             <Button 
               variant="outline-primary" 

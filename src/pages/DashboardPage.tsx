@@ -20,7 +20,11 @@ const DashboardPage: React.FC = () => {
       </div>
       
       <h1 className="mb-4 text-center">Gestor de Tareas</h1>
-      <TaskList />
+      <TaskList
+        task={null}
+        onSubmit={() => {}}
+        onCancel={() => {}}
+      />
     </Container>
   );
 }
