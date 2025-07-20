@@ -4,20 +4,9 @@ import TaskList from '../components/tasks/TaskList';
 
 
 const DashboardPage: React.FC = () => {
-
-  //const { logout } = useAuth();
-
-  //onClick={logout}
   return (
     <Container className="py-5">
-      <div className="d-flex justify-content-end mb-4">
-        <button 
-          
-          className="btn btn-outline-danger"
-        >
-          Cerrar Sesión
-        </button>
-      </div>
+      
       
       <h1 className="mb-4 text-center">Gestor de Tareas</h1>
       <TaskList
