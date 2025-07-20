@@ -10,7 +10,7 @@ const getTasks = async (token: string) => {
 };
 
 const createTask = async (taskData: any, token: string) => {
-  const response = await clientAxios.post("/tasks", taskData, {
+  const response = await clientAxios.post("/task/create", taskData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -19,7 +19,7 @@ const createTask = async (taskData: any, token: string) => {
 };
 
 const updateTask = async (taskId: string, taskData: any, token: string) => {
-  const response = await clientAxios.put(`/tasks/${taskId}`, taskData, {
+  const response = await clientAxios.put(`/task/update/${taskId}`, taskData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -28,7 +28,7 @@ const updateTask = async (taskId: string, taskData: any, token: string) => {
 };
 
 const deleteTask = async (taskId: string, token: string) => {
-  const response = await clientAxios.delete(`/tasks/${taskId}`, {
+  const response = await clientAxios.delete(`/task/delete/${taskId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -38,7 +38,7 @@ const deleteTask = async (taskId: string, token: string) => {
 
 
 const markTaskComplete = async (taskId: string, token: string) => {
-  const response = await clientAxios.patch(`/tasks/${taskId}/complete`, null, {
+  const response = await clientAxios.patch(`/task/mark-complete/${taskId}`, null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -1,6 +1,6 @@
 import {useState, useEffect, useCallback} from 'react';
-//import taskService from '../services/taskService';
-import * as taskService from '../services/mockTasks';
+import taskService from '../services/taskService';
+//import * as taskService from '../services/mockTasks';
 
 export const useTasks = () => {
   // const { token } = useAuth();
@@ -31,10 +31,8 @@ export const useTasks = () => {
     CargarTasks();
   }, [CargarTasks]);
 
-  const addTask = async (task: any) => {
-    // if (!token) return;
-
-    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+  const addTask = async (task: any, token: string) => {
+    if (!token) return;
 
     try {
       const newTask = await taskService.createTask(task, token);
@@ -46,10 +44,8 @@ export const useTasks = () => {
     }
   }
 
-  const editTask = async (id: string, updatedTask: any) => {
-    // if (!token) return;
-
-    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+  const editTask = async (id: string, updatedTask: any, token: string) => {
+    if (!token) return;
 
     try {
       const updateTask = await taskService.updateTask(id, updatedTask, token);
@@ -64,10 +60,8 @@ export const useTasks = () => {
   }
 
 
-  const removeTask = async (id: string) => {
-    // if (!token) return;
-
-    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+  const removeTask = async (id: string, token: string) => {
+    if (!token) return;
 
     try {
       await taskService.deleteTask(id, token);
@@ -79,10 +73,8 @@ export const useTasks = () => {
     }
   }
 
-  const completeTask = async (id: string) => {
-    // if (!token) return;
-
-    const token: string = 'dwdwdw'; // Replace with actual token retrieval logic
+  const completeTask = async (id: string, token: string) => {
+    if (!token) return;
 
     try {
       const markTask = await taskService.markTaskComplete(id, token);

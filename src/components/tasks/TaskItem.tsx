@@ -5,11 +5,13 @@ import type { Tasks } from '../../types/TaskTypes';
 interface TaskItemProps {
   task: Tasks,
   onEdit: (task: Tasks) => void,
-  onDelete: (taskId: string) => void,
-  onComplete: (taskId: string) => void
+  onDelete: (taskId: string, token: string) => void,
+  onComplete: (taskId: string, token: string) => void
+  token: string
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({task, onEdit, onDelete, onComplete }) => {
+const TaskItem: React.FC<TaskItemProps> = ({task, onEdit, onDelete, onComplete, token }) => {
+  
   return (
     <ListGroupItem className="d-flex justify-content-between align-items-center">
       <div>
@@ -37,7 +39,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, onEdit, onDelete, onComplete }
               variant="outline-success" 
               size="sm" 
               className="me-2"
-              onClick={() => onComplete(task.id)}
+              onClick={() => onComplete(task.id, token)}
             >
               Completar
             </Button>
@@ -46,7 +48,7 @@ const TaskItem: React.FC<TaskItemProps> = ({task, onEdit, onDelete, onComplete }
         <Button 
           variant="outline-danger" 
           size="sm"
-          onClick={() => onDelete(task.id)}
+          onClick={() => onDelete(task.id, token)}
         >
           Eliminar
         </Button>

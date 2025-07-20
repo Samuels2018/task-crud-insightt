@@ -1,8 +1,10 @@
-import  {useState} from 'react';
+import  {useState, useEffect} from 'react';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 import { useTasks } from '../../hooks/useTasks';
 import type { Tasks } from '../../types/TaskTypes';
+import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from 'react-router-dom';
 
 
 interface TaskFormProps {
@@ -13,11 +15,27 @@ interface TaskFormProps {
 
 const TaskList: React.FC<TaskFormProps> = () => {
 
+  const {getAccessTokenSilently} = useAuth0();
+  const Navigate = useNavigate();
 
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Tasks | null>(null);
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all")
+  const [token, setToken] = useState<string | null>(null);
   const { tasks, addTask, editTask, removeTask, completeTask } = useTasks();
+
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try{
+        const data = await getAccessTokenSilently();
+        setToken(data);
+      }catch (error) {
+        console.error('Error fetching token:', error);
+      }
+    }
+    fetchToken();
+  }, [getAccessTokenSilently])
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === "pending") return !task.completed
@@ -28,14 +46,19 @@ const TaskList: React.FC<TaskFormProps> = () => {
   const completedCount = tasks.filter((task) => task.completed).length
   const pendingCount = tasks.length - completedCount
 
-  const handleSubmit = (task: Tasks) => {
+  const handleSubmit = async (task: Tasks) => {
+    if (!token) {
+      Navigate('/login');
+      return;
+    }
+
     if ('id' in task) {
       console.log('Editing task:', task);
-      editTask(task.id, task);
+      editTask(task.id, task, token);
     
-    }else {
+    } else {
       console.log('Adding new task:', task);
-      addTask(task);
+      addTask(task, token);
     }
 
     setShowForm(false);
@@ -183,6 +206,7 @@ const TaskList: React.FC<TaskFormProps> = () => {
               filteredTasks.map((task) => (
                 <div key={task.id} className="col-12 mb-3">
                   <TaskItem
+                    token={token ?? ""}
                     task={task}
                     onEdit={setEditingTask}
                     onDelete={removeTask}
