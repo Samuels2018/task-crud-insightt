@@ -1,6 +1,5 @@
 import { Container } from 'react-bootstrap';
 import TaskList from '../components/tasks/TaskList';
-// import { useAuth } from '../context/AuthContext';
 
 
 const DashboardPage: React.FC = () => {

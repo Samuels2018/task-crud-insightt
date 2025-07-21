@@ -1,7 +1,6 @@
 // src/routes/LoginPage.tsx
 import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router-dom";
-import AuthForm from "../components/auth/AuthForm";
 
 export const LoginPage = () => {
   const {
@@ -9,7 +8,6 @@ export const LoginPage = () => {
     isAuthenticated,
     error,
     loginWithRedirect: login,
-    user
   } = useAuth0();
 
   const signup = () => 
@@ -18,7 +16,6 @@ export const LoginPage = () => {
   if (isLoading) return <div>Loading...</div>;
 
   if (isAuthenticated) {
-    // Redirige a la página principal si ya está autenticado
     return <Navigate to="/" replace />;
   }
 
@@ -53,7 +50,7 @@ export const LoginPage = () => {
                       👤
                     </span>
                   </div>
-                  <h1 className="h3 fw-bold text-dark mb-3">¡Bienvenido de vuelta!</h1>
+                  <h1 className="h3 fw-bold text-dark mb-3">¡Bienvenido!</h1>
                   <p className="text-muted">Inicia sesión en tu cuenta o crea una nueva</p>
                 </div>
 

@@ -5,5 +5,4 @@ export interface Tasks {
   title: string;
   description: string;
   completed: number;
-  dueDate: string;
 }

@@ -15,23 +15,42 @@ interface TaskFormProps {
 
 const TaskList: React.FC<TaskFormProps> = () => {
 
-  const {getAccessTokenSilently} = useAuth0();
+  const {getAccessTokenSilently, loginWithRedirect} = useAuth0();
   const Navigate = useNavigate();
 
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Tasks | null>(null);
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all")
   const [token, setToken] = useState<string | null>(null);
-  const { tasks, addTask, editTask, removeTask, completeTask } = useTasks();
+  const { tasks, addTask, editTask, removeTask, completeTask,  } = useTasks();
 
 
   useEffect(() => {
     const fetchToken = async () => {
       try{
-        const data = await getAccessTokenSilently();
+        const data = await getAccessTokenSilently(
+          {
+            authorizationParams: {
+              audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+              scope: "openid profile email offline_access",
+              redirect_uri: window.location.origin
+            },
+            cacheMode: 'off'
+          }
+        );
         setToken(data);
       }catch (error) {
         console.error('Error fetching token:', error);
+        if (error === "missing_refresh_token") {
+        // Forzar reautenticación con scopes completos
+          loginWithRedirect({
+            authorizationParams: {
+              prompt: "login", // Obligar a login completo
+              scope: "openid profile email offline_access",
+              audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+            },
+          });
+        }
       }
     }
     fetchToken();
@@ -51,19 +70,25 @@ const TaskList: React.FC<TaskFormProps> = () => {
       Navigate('/login');
       return;
     }
-
-    if ('id' in task) {
-      console.log('Editing task:', task);
-      editTask(task.id, task, token);
+    const isExisting = tasks.some(t => t.id === task.id);
+    console.log(isExisting)
+    if (isExisting) {
+      console.log('Editing existing task:', task);
+      await editTask(task.id, task, token);
     
-    } else {
-      console.log('Adding new task:', task);
-      addTask(task, token);
+    }else {
+      await addTask(task, token);
     }
 
     setShowForm(false);
     setEditingTask(null);
   }
+
+
+  const handleEdit = async (task: Tasks) => {
+    setEditingTask(task);
+    setShowForm(true);
+  };
 
   return (
     <div className="container-fluid">
@@ -208,7 +233,7 @@ const TaskList: React.FC<TaskFormProps> = () => {
                   <TaskItem
                     token={token ?? ""}
                     task={task}
-                    onEdit={setEditingTask}
+                    onEdit={handleEdit}
                     onDelete={removeTask}
                     onComplete={completeTask}
                   />

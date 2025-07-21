@@ -21,7 +21,7 @@ const TaskForm: React.FC<TaskFormProps> = ({task, onSubmit, onCancel}) => {
       onSubmit({ ...task, title, description });
     
     }else {
-      onSubmit({ id: crypto.randomUUID(), title, description, completed: 2, dueDate: '' });
+      onSubmit({ id: crypto.randomUUID(), title, description, completed: 0});
     }
   }
 
